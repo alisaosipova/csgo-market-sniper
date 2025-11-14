@@ -123,7 +123,7 @@ def load_purchase_buttons():
         return
 
 
-def check_whole_page(count, url_info):
+def check_whole_page(count, url_info, auto_buy):
     max_price_reached = False
     skin_count = 0
     items = items_on_page()
@@ -160,27 +160,33 @@ def check_whole_page(count, url_info):
             except (NoSuchElementException, StaleElementReferenceException):
                 continue
 
-            # Check user balance
-            try:
-                user_bal_num = float(check_user_balance()) / 100
-            except ValueError:
-                sys.stderr.write("Can't get user balance. Are you logged in?")
-                driver.quit()
-                sys.exit()
+            if auto_buy:
+                # Check user balance
+                try:
+                    user_bal_num = float(check_user_balance()) / 100
+                except ValueError:
+                    sys.stderr.write("Can't get user balance. Are you logged in?")
+                    driver.quit()
+                    sys.exit()
 
-            # Check if user have enough money for skin
-            if user_bal_num < price_text_num[idx]:
-                continue
+                # Check if user have enough money for skin
+                if user_bal_num < price_text_num[idx]:
+                    continue
 
             # Check if float and pattern match with user input
             if check_item_parameters(item_float, item_pattern, whole_json, count, url_info) is False:
                 continue
 
-            # Buy skin
-            buy_skin(buy_now[idx])
+            if auto_buy:
+                # Buy skin
+                buy_skin(buy_now[idx])
 
-            # Save information to file
-            buy_log(item_name, item_float, item_pattern, price_text_num[idx], buy_count)
+                # Save information to file
+                buy_log(item_name, item_float, item_pattern, price_text_num[idx], buy_count)
+            else:
+                print(
+                    f"Match found: {item_name} | Float: {item_float:.5f} | Pattern: {item_pattern} | Price: {price_text_num[idx]}"
+                )
 
         if url_info[count][4] is not None:
             if page >= url_info[count][4] or int(page_count()) == url_info[count][4]:

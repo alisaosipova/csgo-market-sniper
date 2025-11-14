@@ -6,8 +6,8 @@ cls()
 driver.get("https://steamcommunity.com/login/home/?goto=market%2Flistings%2F730")
 
 #Load config
-url_info = load_config()
-if url_info == None:
+url_info, auto_buy = load_config()
+if url_info is None:
     driver.quit()
     sys.exit()
     
@@ -28,5 +28,5 @@ while True:
         count = 0
 
     driver.get(url_info[count][5])
-    check_whole_page(count, url_info)
+    check_whole_page(count, url_info, auto_buy)
     count += 1
