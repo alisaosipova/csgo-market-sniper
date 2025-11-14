@@ -6,6 +6,8 @@ def load_config():
     with open('settings/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
 
+    auto_buy = config.get('auto_buy', True)
+
     url_info = [[None]*6 for _ in range(len(config['skins']))]
 
     # Access the products list and loop over each product
@@ -20,11 +22,11 @@ def load_config():
 
         if url_info[idx][5] == None:
             print("There is skin that have URL empty in config.yaml.\nExiting...")
-            return None
+            return None, auto_buy
         
         if url_info[idx][1] is not None:
             if type(url_info[idx][1]) == str:
                 url_info[idx][1] = url_info[idx][1].split(', ')
 
     print(f"Loaded {len(url_info)} skins!")
-    return url_info
+    return url_info, auto_buy

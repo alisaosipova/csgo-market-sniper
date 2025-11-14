@@ -9,7 +9,7 @@ This bot will not work with stickers and cases, keep this in mind. *(You can che
 ## Features
 
 - Skin monitoring
-- Automatic purchase
+- Automatic purchase (can be disabled)
 - Logging into file after purchase
 - You can choose specific patterns or floats for bot to find
 - Buy only skins with/without stickers
@@ -30,10 +30,12 @@ Open settinngs/config.yaml file ,and fill this file based on example provided.
 ```yaml
 # Example configuration file for program
 
+auto_buy: true # Set to false to only notify about matching skins
+
 skins:
   - url: https://steamcommunity.com/market/listings/730/MP7%20%7C%20Army%20Recon%20%28Field-Tested%29
     float: # Leave empty for ANY
-    price: 100 
+    price: 100
     number_of_stickers: # Leave empty for ANY
     pages: 2
     pattern: 502, 800
